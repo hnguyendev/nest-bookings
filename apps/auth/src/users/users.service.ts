@@ -10,6 +10,8 @@ import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class UsersService {
+  private readonly defaultRole = 'user';
+
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -17,6 +19,7 @@ export class UsersService {
     return this.usersRepository.create({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),
+      roles: [this.defaultRole],
     });
   }
 
